@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  app:
+    image: go-redis-cluster
+    container_name: go-redis-cluster
+    build:
+      context: .
+    ports:
+      - "5003:5000"
+    volumes:
+      - "./:/go/src/app"
+    networks:
+      - redis-cluster
+    environment:
+      - REDIS_HOST=go-redis-cluster_master
+      - REDIS_PORT=6379
+    depends_on:
+      - "redis_master"
+
+  redis_master:
+    image: redis:6.2.6
+    container_name: go-redis-cluster_master
+    restart: unless-stopped
+    ports:
+      - "16379:6379"
+    volumes:
+      - "./conf/master.conf:/usr/local/etc/redis/redis.conf"
+      #- "./conf/master_aof.conf:/usr/local/etc/redis/redis.conf"
+    networks:
+      - redis-cluster
+    command: [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
+
+  redis_slave:
+    image: redis:6.2.6
+    container_name: go-redis-cluster_slave
+    restart: unless-stopped
+    ports:
+      - "17379:6379"
+    volumes:
+      - "./conf/slave.conf:/usr/local/etc/redis/redis.conf"
+    networks:
+      - redis-cluster
+    depends_on:
+      - "redis_master"
+    command: [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
+
+#volumes:
+#  redis:
+#    driver: local
+
+networks:
+  redis-cluster:
+    driver: bridge
