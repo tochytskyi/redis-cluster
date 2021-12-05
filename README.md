@@ -21,3 +21,5 @@ Make redis cluster with Go probabilistic cache implementation
 
 4. To change eviction policy use `maxmemory-policy` param in `./conf/*.conf` config files
 
+5. Cache Stampede implementation via Redis `src/redis/cache-stampede.go`
+
