@@ -22,7 +22,7 @@ func Init() {
 		log.Fatalln("Redis error", err)
 	}
 
-	log.Println(pong)
+	log.Println("Redis PING -> " + pong)
 }
 
 func GetInstance() *redis.Client {

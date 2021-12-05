@@ -7,10 +7,12 @@ Make redis cluster with Go probabilistic cache implementation
 2. Try basic replication with `RDB` persistence mode
     - Set value to master node `docker exec -it go-redis-cluster_master redis-cli set testKey testValue`
     - Check that value `docker exec -it go-redis-cluster_master redis-cli get testKey`
+    
         ```
         testValue
         ```
     - Check that slave has the same data `docker exec -it go-redis-cluster_slave redis-cli get testKey`
+
         ```
         testValue
         ```

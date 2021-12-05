@@ -6,8 +6,9 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 
-	redisInit "github.com/tochytskyi/redis-cluster/src/redis"
+	redisCache "github.com/tochytskyi/redis-cluster/src/redis"
 )
 
 func main() {
@@ -25,12 +26,9 @@ func main() {
 
 	log.Println("Running app")
 
-	redisInit.Init()
+	redisCache.Init()
 
-	//currentValue, err := redis.GetInstance().Get("users").Result()
-	//if err != nil {
-	//	log.Println("No data in cache", err)
-	//}
+	redisCache.GetOrRefresh("testKey2", int(time.Second)*10)
 
 	<-done
 	log.Println("exiting app")
